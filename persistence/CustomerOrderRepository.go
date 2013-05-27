@@ -2,22 +2,11 @@ package persistence
 
 import (
 	"sgo/projectx/modelapi"
+	"sgo/projectx/persistence/base"
 	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
 	"fmt"
 )
-
-var (
-	coll *mgo.Collection
-)
-
-func init() {
-	session, err := mgo.Dial("localhost")
-	if err != nil {
-		panic(err)
-	}
-	coll = session.DB("go-projectx").C("customerOrders")
-}
 
 type ICustomerOrderRepository interface {
 	Save(modelapi.ICustomerOrder)
@@ -28,17 +17,22 @@ func NewCustomerOrderRepository() ICustomerOrderRepository {
 	return &customerOrderRepository{}
 }
 
+// Customer order repository implementation.
 type customerOrderRepository struct {
 }
 
-func (* customerOrderRepository) Save(order modelapi.ICustomerOrder) {
-	fmt.Println(order)
-	coll.Insert(CustomerOrderToBson(order))
+func (r *customerOrderRepository) getColl() *mgo.Collection {
+	return base.GetColl("customer-orders")
 }
 
-func (* customerOrderRepository) FindById(id string) modelapi.ICustomerOrder {
+func (r *customerOrderRepository) Save(order modelapi.ICustomerOrder) {
+	fmt.Println(order)
+	r.getColl().Insert(CustomerOrderConverter{}.ToBson(order))
+}
+
+func (r *customerOrderRepository) FindById(id string) modelapi.ICustomerOrder {
 	m := make(map[string] interface {})
-	coll.FindId(bson.ObjectIdHex(id)).One(&m)
-	return CustomOrderFromMap(m)
+	r.getColl().FindId(bson.ObjectIdHex(id)).One(&m)
+	return CustomerOrderConverter{}.FromMap(m)
 }
 

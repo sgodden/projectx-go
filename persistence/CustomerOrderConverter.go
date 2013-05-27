@@ -3,25 +3,22 @@ package persistence
 import (
 	"sgo/projectx/model"
 	"sgo/projectx/modelapi"
+	"sgo/projectx/util"
 	"labix.org/v2/mgo/bson"
 )
 
-func CustomerOrderToBson(o modelapi.ICustomerOrder) (bson.M) {
-	m := bson.M{
+type CustomerOrderConverter struct {}
+
+func (CustomerOrderConverter) ToBson(o modelapi.ICustomerOrder) (bson.M) {
+	m := IdentifiableConverter{}.ToBson(o)
+	util.MapUtil{}.AddAll(m, bson.M {
 		"orderNumber": o.OrderNumber(),
 		"customerReference": o.CustomerReference(),
-	}
-	if len(o.Id()) == 0 {
-		oid := bson.NewObjectId()
-		m["_id"] = oid
-		o.SetId(oid.Hex())
-	} else {
-		m["_id"] = bson.ObjectIdHex(o.Id())
-	}
-	return m
+		})
+	return m;
 }
 
-func CustomOrderFromMap(m map[string] interface {}) modelapi.ICustomerOrder {
+func (CustomerOrderConverter) FromMap(m map[string] interface {}) modelapi.ICustomerOrder {
 	o := model.CustomerOrder{}
 	o.SetId(m["_id"].(bson.ObjectId).Hex())
 	o.SetOrderNumber(m["orderNumber"].(string))
