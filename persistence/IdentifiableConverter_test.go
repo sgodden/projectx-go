@@ -2,16 +2,23 @@ package persistence
 
 import (
 	"testing"
+	"reflect"
+	"fmt"
+	"labix.org/v2/mgo/bson"
 	"sgo/projectx/model"
 )
 
 func TestIdentifiableConverterShouldAllocateId(t *testing.T) {
 	o := model.CustomerOrder{}
-	IdentifiableConverter{}.ToBson(&o)
+	m := IdentifiableConverter{}.ToBson(&o)
 
-	if len(o.Id()) == 0 {
-		t.Error("No id allocated")
+	value, present := m["_id"]
+	if !present {
+		t.Error("_id is not present")
+	}
+
+	if reflect.TypeOf(value) != reflect.TypeOf(bson.NewObjectId()) {
+		t.Error(fmt.Sprintf("_id is wrong type: %T", value))
 	}
 
 }
-

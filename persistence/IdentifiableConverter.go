@@ -1,8 +1,8 @@
 package persistence
 
 import (
-	"sgo/projectx/modelapi"
 	"labix.org/v2/mgo/bson"
+	"sgo/projectx/modelapi"
 )
 
 type IdentifiableConverter struct {

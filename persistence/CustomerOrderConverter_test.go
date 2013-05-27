@@ -1,17 +1,19 @@
 package persistence
 
 import (
+	"sgo/projectx/model"
+	"sgo/projectx/testutil"
 	"testing"
-//	"sgo/projectx/model"
 )
 
 func TestCustomerOrderConverterShouldAllocateId(t *testing.T) {
-//	o := model.CustomerOrder{}
-//	m := CustomerOrderConverter{}.ToBson(&o)
 
-//	if len(m["orderNumber"].(string)) == 0 {
-//		t.Error("Order number not present")
-//	}
+	o := model.CustomerOrder{}
+	o.SetOrderNumber("ordNum")
+	o.SetCustomerReference("custRef")
 
+	m := CustomerOrderConverter{}.ToBson(&o)
+
+	testutil.AssertLength(m["orderNumber"], "Order number not present", t)
+	testutil.AssertLength(m["customerReference"], "Customer reference not present", t)
 }
-

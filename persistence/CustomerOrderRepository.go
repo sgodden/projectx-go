@@ -1,11 +1,11 @@
 package persistence
 
 import (
-	"sgo/projectx/modelapi"
-	"sgo/projectx/persistence/base"
+	"fmt"
 	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
-	"fmt"
+	"sgo/projectx/modelapi"
+	"sgo/projectx/persistence/base"
 )
 
 type ICustomerOrderRepository interface {
@@ -13,6 +13,7 @@ type ICustomerOrderRepository interface {
 	FindById(id string) modelapi.ICustomerOrder
 }
 
+// Factory method to return a customer order repository instance.
 func NewCustomerOrderRepository() ICustomerOrderRepository {
 	return &customerOrderRepository{}
 }
@@ -31,8 +32,7 @@ func (r *customerOrderRepository) Save(order modelapi.ICustomerOrder) {
 }
 
 func (r *customerOrderRepository) FindById(id string) modelapi.ICustomerOrder {
-	m := make(map[string] interface {})
+	m := make(map[string]interface{})
 	r.getColl().FindId(bson.ObjectIdHex(id)).One(&m)
 	return CustomerOrderConverter{}.FromMap(m)
 }
-
