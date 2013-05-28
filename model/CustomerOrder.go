@@ -21,7 +21,11 @@ type CustomerOrder struct {
 
 func (o* CustomerOrder) Shout() {
 	o.Identity.Shout()
-	fmt.Println("CustomerOrder shout");
+	fmt.Println("CustomerOrder shout")
+}
+
+func (o *CustomerOrder) Validate() {
+
 }
 
 func (o *CustomerOrder) OrderNumber() string {

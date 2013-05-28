@@ -3,8 +3,12 @@ package main
 import (
 	"fmt"
 	"sgo/projectx/model"
-	"sgo/projectx/persistence"
+	"sgo/projectx/service"
 )
+
+type Foo interface {
+	CustomerReference() string
+}
 
 func main() {
 
@@ -12,10 +16,13 @@ func main() {
 	o.SetOrderNumber("ord001");
 	o.SetCustomerReference("cr001");
 
-	repo := persistence.NewCustomerOrderRepository()
-	repo.Save(&o)
+	s := service.NewCustomerOrderService()
+	s.Save(&o)
 
-	p := repo.FindById(o.Id())
-	fmt.Println(p.CustomerReference())
+	p := s.FindById(o.Id())
+	if p != nil {
+		fmt.Println(p.Id())
+		fmt.Println(p.CustomerReference())
+	}
 
 }
