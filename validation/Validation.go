@@ -1,7 +1,8 @@
 package validation
 
+// Constrained indicates that the implementing object returns a list of constraints that should be used to validate it
 type Constrained interface {
-	GetConstraints() map[string][]Constraint
+	Constraints() map[string][]Constraint
 }
 
 type ConstraintViolation struct {
@@ -10,13 +11,29 @@ type ConstraintViolation struct {
 }
 
 type Constraint interface {
-	Validate(value interface{}, path string) ConstraintViolation
+	Validate(value interface{}, path string) (bool, ConstraintViolation)
 }
 
+// Validator validates a passed instance of Constrained and returns an array of constraint violations
+type Validator interface {
+	Validate(obj Constrained) []ConstraintViolation
+}
+
+type validator struct {
+}
+
+func (* validator) Validate(obj Constrained) []ConstraintViolation {
+	return make([]ConstraintViolation, 0)
+}
+
+func NewValidator() Validator {
+	return &validator{}
+}
+
+// A constraint which does not allow the corresponding value to be empty or nil.
 type NotEmptyConstraint struct {
 	Constraint
 }
-
 func (NotEmptyConstraint) Validate(value interface{}, path string) (bool, ConstraintViolation) {
 	success := true
 
