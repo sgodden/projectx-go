@@ -21,6 +21,27 @@ func TestNotEmptyConstraintAllowsNonEmptyString(t *testing.T) {
 	}
 }
 
+func TestValidatorValidatesConstrained(t *testing.T) {
+	v := NewValidator()
+	c := foo{"myvalue"}
+	violations := v.Validate(&c)
+
+	// our mock validator always returns a violation
+	if len(violations) != 1 {
+		t.Error("There should have been one violation")
+	}
+
+	violation := violations[0]
+	if violation.Message != "FOO" {
+		t.Error("Wrong message on returned violation")
+	}
+
+	if capturedValue != "myvalue" {
+		t.Error("Wrong value was passed to validator")
+	}
+}
+
+
 // A simmple type for our validation tests
 type foo struct {
 	someProperty string
@@ -45,26 +66,4 @@ func (myValidator) Validate(value interface {}, path string) (bool, ConstraintVi
 		"BAR",
 	}
 }
-
-// FIXME - this is not a unit test - I'm testing the empty constraint as well
-func TestValidatorValidatesConstrained(t *testing.T) {
-	v := NewValidator()
-	c := foo{"myvalue"}
-	violations := v.Validate(&c)
-
-	// our mock validator always returns a violation
-	if len(violations) != 1 {
-		t.Error("There should have been one violation")
-	}
-
-	violation := violations[0]
-	if violation.Message != "FOO" {
-		t.Error("Wrong message on returned violation")
-	}
-
-	if capturedValue != "myvalue" {
-		t.Error("Wrong value was passed to validator")
-	}
-}
-
 
