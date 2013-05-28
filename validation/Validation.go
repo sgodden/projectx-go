@@ -1,7 +1,6 @@
 package validation
 
 import (
-	"fmt"
 	"reflect"
 )
 
@@ -28,22 +27,23 @@ type validator struct {
 }
 
 func (* validator) Validate(obj Constrained) []ConstraintViolation {
+	ret := make([]ConstraintViolation, 0)
 	constraints := obj.Constraints()
 	v := reflect.ValueOf(obj)
-	for key, value := range constraints {
-		fmt.Println(key)
-		fmt.Println(value)
+	for key, thisPropertyConstraints := range constraints {
 		// TODO - use reflect to get the property value
 		getter := v.MethodByName(key)
-		fmt.Println(getter.String())
-		propValue := getter.Call([]reflect.Value{})
-		fmt.Println(fmt.Sprintf("Prop value is %d", len(propValue)))
-
-		for _, value2 := range value {
-			fmt.Println(value2.Validate("", "foo"))
+		propValues := getter.Call([]reflect.Value{})
+		// it's a getter so only ever returns one value
+		propValue := propValues[0]
+		for _, value2 := range thisPropertyConstraints {
+			success, violation := value2.Validate(propValue.String(), key)
+			if !success {
+				ret = append(ret, violation)
+			}
 		}
 	}
-	return make([]ConstraintViolation, 0)
+	return ret
 }
 
 func NewValidator() Validator {

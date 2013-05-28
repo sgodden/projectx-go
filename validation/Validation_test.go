@@ -2,7 +2,10 @@ package validation
 
 import (
 	"testing"
-	"fmt"
+)
+
+var (
+	capturedValue string
 )
 
 func TestNotEmptyConstraintDoesNotAllowEmptyString(t *testing.T) {
@@ -18,6 +21,7 @@ func TestNotEmptyConstraintAllowsNonEmptyString(t *testing.T) {
 	}
 }
 
+// A simmple type for our validation tests
 type foo struct {
 	someProperty string
 }
@@ -26,20 +30,41 @@ func (f *foo) SomeProperty() string {
 }
 func (* foo) Constraints() map[string][]Constraint {
 	return map[string][]Constraint {
-		"SomeProperty": []Constraint{NotEmptyConstraint{}},
+		"SomeProperty": []Constraint{myValidator{}},
 	}
 }
 
+// A mock validator for our validation tests
+type myValidator struct {}
+func (myValidator) Validate(value interface {}, path string) (bool, ConstraintViolation) {
+	// should be passed 'myvalue' as a string
+	capturedValue = value.(string)
+
+	return false, ConstraintViolation{
+		"FOO",
+		"BAR",
+	}
+}
+
+// FIXME - this is not a unit test - I'm testing the empty constraint as well
 func TestValidatorValidatesConstrained(t *testing.T) {
 	v := NewValidator()
-	c := foo{"bar"}
+	c := foo{"myvalue"}
 	violations := v.Validate(&c)
-	fmt.Println("asd")
-	fmt.Println(len(violations))
 
-	if len(violations) == 0 {
-		t.Error("ASD")
+	// our mock validator always returns a violation
+	if len(violations) != 1 {
+		t.Error("There should have been one violation")
 	}
 
+	violation := violations[0]
+	if violation.Message != "FOO" {
+		t.Error("Wrong message on returned violation")
+	}
+
+	if capturedValue != "myvalue" {
+		t.Error("Wrong value was passed to validator")
+	}
 }
+
 
