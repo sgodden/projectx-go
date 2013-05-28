@@ -1,11 +1,19 @@
 package validation
 
-import "testing"
+import (
+	"testing"
+)
 
-func TestNilValidatorDoesNotAllowEmptyString(t *testing.T) {
-	msg := NotNilValidator{}.Validate("", "foo")
-	if len(msg.Message) == 0 {
+func TestEmptyValidatorDoesNotAllowEmptyString(t *testing.T) {
+	success, _ := NotEmptyValidator{}.Validate("", "foo")
+	if success {
 		t.Error("Should have failed")
+	}
+}
+func TestEmptyValidatorAllowsNonEmptyString(t *testing.T) {
+	success, _ := NotEmptyValidator{}.Validate("bar", "foo")
+	if !success {
+		t.Error("Should have passed")
 	}
 }
 

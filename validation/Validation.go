@@ -9,11 +9,12 @@ type validator interface {
 	Validate(value interface{}, path string) ValidationError
 }
 
-type NotNilValidator struct {}
+type NotEmptyValidator struct {}
 
-func (NotNilValidator) Validate(value interface{}, path string) ValidationError {
+func (NotEmptyValidator) Validate(value interface{}, path string) (bool, ValidationError) {
+	success := true
+
 	ret := ValidationError{}
-
 	badRet := ValidationError{
 		"May not be nil",
 		path,
@@ -22,21 +23,23 @@ func (NotNilValidator) Validate(value interface{}, path string) ValidationError 
 	switch value := value.(type) {
 	default:
 		if value == nil {
-			ret = badRet
+			success = false
 		}
 	case string:
 		if len(value) == 0 {
-			ret = badRet
+			success = false
+		}
+	case int:
+		if value == 0 {
+			success = false
 		}
 	}
 
-	if value == 0 {
-		ret = ValidationError{
-			"May not be nil",
-			path,
-		}
+	if (!success) {
+		ret = badRet
 	}
 
-	return ret
+	return success, ret
+
 }
 
