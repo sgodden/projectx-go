@@ -1,5 +1,9 @@
 package validation
 
+import (
+	"fmt"
+)
+
 // Constrained indicates that the implementing object returns a list of constraints that should be used to validate it
 type Constrained interface {
 	Constraints() map[string][]Constraint
@@ -23,6 +27,16 @@ type validator struct {
 }
 
 func (* validator) Validate(obj Constrained) []ConstraintViolation {
+	constraints := obj.Constraints()
+	for key, value := range constraints {
+		// TODO - use reflect to get the property value
+		fmt.Println(key)
+		fmt.Println(value)
+
+		for _, value2 := range value {
+			fmt.Println(value2.Validate("", "foo"))
+		}
+	}
 	return make([]ConstraintViolation, 0)
 }
 
