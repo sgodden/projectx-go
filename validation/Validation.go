@@ -2,6 +2,7 @@ package validation
 
 import (
 	"fmt"
+	"reflect"
 )
 
 // Constrained indicates that the implementing object returns a list of constraints that should be used to validate it
@@ -28,10 +29,15 @@ type validator struct {
 
 func (* validator) Validate(obj Constrained) []ConstraintViolation {
 	constraints := obj.Constraints()
+	v := reflect.ValueOf(obj)
 	for key, value := range constraints {
-		// TODO - use reflect to get the property value
 		fmt.Println(key)
 		fmt.Println(value)
+		// TODO - use reflect to get the property value
+		getter := v.MethodByName(key)
+		fmt.Println(getter.String())
+		propValue := getter.Call([]reflect.Value{})
+		fmt.Println(fmt.Sprintf("Prop value is %d", len(propValue)))
 
 		for _, value2 := range value {
 			fmt.Println(value2.Validate("", "foo"))

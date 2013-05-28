@@ -19,7 +19,10 @@ func TestNotEmptyConstraintAllowsNonEmptyString(t *testing.T) {
 }
 
 type foo struct {
-	SomeProperty string
+	someProperty string
+}
+func (f *foo) SomeProperty() string {
+	return f.someProperty
 }
 func (* foo) Constraints() map[string][]Constraint {
 	return map[string][]Constraint {
