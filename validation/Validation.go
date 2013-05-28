@@ -1,21 +1,27 @@
 package validation
 
-type ValidationError struct {
+type Constrained interface {
+	GetConstraints() map[string][]Constraint
+}
+
+type ConstraintViolation struct {
 	Message string
 	Path    string
 }
 
-type validator interface {
-	Validate(value interface{}, path string) ValidationError
+type Constraint interface {
+	Validate(value interface{}, path string) ConstraintViolation
 }
 
-type NotEmptyValidator struct {}
+type NotEmptyConstraint struct {
+	Constraint
+}
 
-func (NotEmptyValidator) Validate(value interface{}, path string) (bool, ValidationError) {
+func (NotEmptyConstraint) Validate(value interface{}, path string) (bool, ConstraintViolation) {
 	success := true
 
-	ret := ValidationError{}
-	badRet := ValidationError{
+	ret := ConstraintViolation{}
+	badRet := ConstraintViolation{
 		"May not be nil",
 		path,
 	}

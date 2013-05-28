@@ -5,13 +5,13 @@ import (
 )
 
 func TestEmptyValidatorDoesNotAllowEmptyString(t *testing.T) {
-	success, _ := NotEmptyValidator{}.Validate("", "foo")
+	success, _ := NotEmptyConstraint{}.Validate("", "foo")
 	if success {
 		t.Error("Should have failed")
 	}
 }
 func TestEmptyValidatorAllowsNonEmptyString(t *testing.T) {
-	success, _ := NotEmptyValidator{}.Validate("bar", "foo")
+	success, _ := NotEmptyConstraint{}.Validate("bar", "foo")
 	if !success {
 		t.Error("Should have passed")
 	}
