@@ -31,13 +31,12 @@ func (* validator) Validate(obj Constrained) []ConstraintViolation {
 	constraints := obj.Constraints()
 	v := reflect.ValueOf(obj)
 	for key, thisPropertyConstraints := range constraints {
-		// TODO - use reflect to get the property value
 		getter := v.MethodByName(key)
 		propValues := getter.Call([]reflect.Value{})
-		// it's a getter so only ever returns one value
 		propValue := propValues[0]
-		for _, value2 := range thisPropertyConstraints {
-			success, violation := value2.Validate(propValue.String(), key)
+		for _, constraint := range thisPropertyConstraints {
+			// FIXME - types other than strings
+			success, violation := constraint.Validate(propValue.String(), key)
 			if !success {
 				ret = append(ret, violation)
 			}
