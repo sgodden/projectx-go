@@ -19,11 +19,6 @@ type CustomerOrder struct {
 	customerReference string
 }
 
-func (o* CustomerOrder) Shout() {
-	o.Identity.Shout()
-	fmt.Println("CustomerOrder shout")
-}
-
 func (o *CustomerOrder) Validate() {
 
 }
