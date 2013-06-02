@@ -41,23 +41,24 @@ func TestValidatorValidatesConstrained(t *testing.T) {
 	}
 }
 
-
 // A simmple type for our validation tests
 type foo struct {
 	someProperty string
 }
+
 func (f *foo) SomeProperty() string {
 	return f.someProperty
 }
-func (* foo) Constraints() map[string][]Constraint {
-	return map[string][]Constraint {
+func (*foo) Constraints() map[string][]Constraint {
+	return map[string][]Constraint{
 		"SomeProperty": []Constraint{myValidator{}},
 	}
 }
 
 // A mock validator for our validation tests
-type myValidator struct {}
-func (myValidator) Validate(value interface {}, path string) (bool, ConstraintViolation) {
+type myValidator struct{}
+
+func (myValidator) Validate(value interface{}, path string) (bool, ConstraintViolation) {
 	// should be passed 'myvalue' as a string
 	capturedValue = value.(string)
 
@@ -66,4 +67,3 @@ func (myValidator) Validate(value interface {}, path string) (bool, ConstraintVi
 		"BAR",
 	}
 }
-

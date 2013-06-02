@@ -26,7 +26,7 @@ type Validator interface {
 type validator struct {
 }
 
-func (* validator) Validate(obj Constrained) []ConstraintViolation {
+func (*validator) Validate(obj Constrained) []ConstraintViolation {
 	ret := make([]ConstraintViolation, 0)
 	constraints := obj.Constraints()
 	v := reflect.ValueOf(obj)
@@ -53,6 +53,7 @@ func NewValidator() Validator {
 type NotEmptyConstraint struct {
 	Constraint
 }
+
 func (NotEmptyConstraint) Validate(value interface{}, path string) (bool, ConstraintViolation) {
 	success := true
 
@@ -77,11 +78,10 @@ func (NotEmptyConstraint) Validate(value interface{}, path string) (bool, Constr
 		}
 	}
 
-	if (!success) {
+	if !success {
 		ret = badRet
 	}
 
 	return success, ret
 
 }
-

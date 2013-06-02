@@ -13,8 +13,8 @@ type Foo interface {
 func main() {
 
 	o := model.CustomerOrder{}
-	o.SetOrderNumber("ord001");
-	o.SetCustomerReference("cr001");
+	o.SetOrderNumber("ord001")
+	o.SetCustomerReference("cr001")
 
 	s := service.NewCustomerOrderService()
 	s.Save(&o)

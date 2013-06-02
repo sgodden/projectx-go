@@ -1,11 +1,11 @@
 package persistence
 
 import (
-	"testing"
-	"reflect"
 	"fmt"
 	"labix.org/v2/mgo/bson"
+	"reflect"
 	"sgo/projectx/model"
+	"testing"
 )
 
 func TestIdentifiableConverterShouldAllocateId(t *testing.T) {

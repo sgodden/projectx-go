@@ -9,7 +9,5 @@ func (i *Identity) Id() string {
 }
 
 func (i *Identity) SetId(s string) {
-	i.id = s;
+	i.id = s
 }
-
-

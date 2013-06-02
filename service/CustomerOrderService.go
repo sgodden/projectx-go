@@ -22,16 +22,14 @@ type customerOrderService struct {
 	ICustomerOrderService
 }
 
-func (* customerOrderService) Save(order modelapi.ICustomerOrder) {
+func (*customerOrderService) Save(order modelapi.ICustomerOrder) {
 	customerOrderRepo.Save(order)
 }
 
-func (* customerOrderService) FindById(id string) modelapi.ICustomerOrder {
+func (*customerOrderService) FindById(id string) modelapi.ICustomerOrder {
 	return customerOrderRepo.FindById(id)
 }
 
 func NewCustomerOrderService() ICustomerOrderService {
 	return &customerOrderService{}
 }
-
-

@@ -10,12 +10,12 @@ var (
 
 func init() {
 	x = 5
-	fmt.Println(x);
+	fmt.Println(x)
 }
 
 type CustomerOrder struct {
 	Identity
-	orderNumber string
+	orderNumber       string
 	customerReference string
 }
 
@@ -39,4 +39,3 @@ func (o *CustomerOrder) SetOrderNumber(value string) {
 func (o *CustomerOrder) SetCustomerReference(value string) {
 	o.customerReference = value
 }
-
