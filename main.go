@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sgo/projectx/model"
 	"sgo/projectx/service"
+	"sgo/projectx/persistence/base"
 )
 
 type Foo interface {
@@ -11,6 +12,7 @@ type Foo interface {
 }
 
 func main() {
+	base.InitSession()
 
 	o := model.CustomerOrder{}
 	o.SetOrderNumber("ord001")
