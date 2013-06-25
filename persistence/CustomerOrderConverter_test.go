@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestCustomerOrderConverterShouldAllocateId(t *testing.T) {
+func TestCustomerOrderConverterShouldStoreValues(t *testing.T) {
 
 	o := model.CustomerOrder{}
 	o.SetOrderNumber("ordNum")

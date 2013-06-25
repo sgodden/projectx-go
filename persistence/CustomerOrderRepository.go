@@ -6,6 +6,7 @@ import (
 	"labix.org/v2/mgo/bson"
 	"sgo/projectx/modelapi"
 	"sgo/projectx/persistence/base"
+	"sgo/projectx/model"
 )
 
 type ICustomerOrderRepository interface {
@@ -34,5 +35,7 @@ func (r *customerOrderRepository) Save(order modelapi.ICustomerOrder) {
 func (r *customerOrderRepository) FindById(id string) modelapi.ICustomerOrder {
 	m := make(map[string]interface{})
 	r.getColl().FindId(bson.ObjectIdHex(id)).One(&m)
-	return CustomerOrderConverter{}.FromMap(m)
+	ret := model.CustomerOrder{}
+	CustomerOrderConverter{}.FromMap(m, &ret)
+	return &ret
 }

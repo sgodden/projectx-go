@@ -18,5 +18,8 @@ func (IdentifiableConverter) ToBson(o modelapi.Identifiable) bson.M {
 		m["_id"] = bson.ObjectIdHex(o.Id())
 	}
 	return m
+}
 
+func (IdentifiableConverter) FromMap(m map[string]interface {}, o modelapi.Identifiable) {
+	o.SetId(m["_id"].(bson.ObjectId).Hex())
 }
