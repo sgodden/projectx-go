@@ -1,9 +1,5 @@
 package model
 
-import (
-	"fmt"
-)
-
 type CustomerOrder struct {
 	Identity
 	orderNumber       string
