@@ -39,6 +39,5 @@ func (r *customerOrderRepository) Save(order modelapi.ICustomerOrder) {
 }
 
 func (r *customerOrderRepository) FindById(id string) modelapi.ICustomerOrder {
-	fmt.Println("Id " + id)
 	return base.FindById(id, r, CustomerOrderConverter{}).(modelapi.ICustomerOrder)
 }
