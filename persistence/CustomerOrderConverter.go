@@ -8,7 +8,8 @@ import (
 
 type CustomerOrderConverter struct{}
 
-func (CustomerOrderConverter) ToBson(o *model.CustomerOrder) bson.M {
+func (CustomerOrderConverter) ToBson(obj interface {}) bson.M {
+	o := obj.(*model.CustomerOrder)
 	m := IdentifiableConverter{}.ToBson(o)
 	util.MapUtil{}.AddAll(m, bson.M{
 		"orderNumber":       o.OrderNumber(),

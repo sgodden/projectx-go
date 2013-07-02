@@ -23,11 +23,13 @@ func InitSession() {
 
 type Converter interface {
 	FromMap(m map[string]interface {}, o interface {})
+	ToBson(o interface {}) bson.M
 }
 
 type Repository interface {
 	CollectionName() string
 	NewObject() interface {}
+	Converter() Converter
 }
 
 func GetColl(collectionName string) *mgo.Collection {
@@ -37,11 +39,15 @@ func GetColl(collectionName string) *mgo.Collection {
 	return session.DB("go-projectx").C(collectionName)
 }
 
-func FindById(id string, r Repository, c Converter) interface {} {
+func FindById(id string, r Repository) interface {} {
 	m := make(map[string]interface{})
 	o := r.NewObject()
 	GetColl(r.CollectionName()).FindId(bson.ObjectIdHex(id)).One(&m)
-	c.FromMap(m, o)
+	r.Converter().FromMap(m, o)
 	return o
+}
+
+func Save(o interface {}, r Repository) {
+	GetColl(r.CollectionName()).Insert(r.Converter().ToBson(o))
 }
 
