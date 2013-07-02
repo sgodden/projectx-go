@@ -1,7 +1,6 @@
 package persistence
 
 import (
-	"fmt"
 	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
 	"sgo/projectx/modelapi"
@@ -24,11 +23,10 @@ type customerOrderRepository struct {
 }
 
 func (r *customerOrderRepository) getColl() *mgo.Collection {
-	return base.GetColl("customer-orders")
+	return base.GetColl("customerOrders")
 }
 
 func (r *customerOrderRepository) Save(order modelapi.ICustomerOrder) {
-	fmt.Println(order)
 	r.getColl().Insert(CustomerOrderConverter{}.ToBson(order))
 }
 
