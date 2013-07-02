@@ -2,6 +2,7 @@ package base
 
 import (
 	"labix.org/v2/mgo"
+	"labix.org/v2/mgo/bson"
 )
 
 var (
@@ -20,10 +21,27 @@ func InitSession() {
 	_createSession()
 }
 
+type Converter interface {
+	FromMap(m map[string]interface {}, o interface {})
+}
+
+type Repository interface {
+	CollectionName() string
+	NewObject() interface {}
+}
+
 func GetColl(collectionName string) *mgo.Collection {
 	if session == nil {
 		panic("No mongo session - ensure you have called InitSession on startup")
 	}
 	return session.DB("go-projectx").C(collectionName)
+}
+
+func FindById(id string, r Repository, c Converter) interface {} {
+	m := make(map[string]interface{})
+	o := r.NewObject()
+	GetColl(r.CollectionName()).FindId(bson.ObjectIdHex(id)).One(&m)
+	c.FromMap(m, o)
+	return o
 }
 
