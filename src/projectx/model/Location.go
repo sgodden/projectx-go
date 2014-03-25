@@ -3,8 +3,8 @@ package model
 type Location struct {
 	Identity
 	Coded
-	description       string
-	timeZone          string
+	description string
+	timeZone    string
 }
 
 func (o *Location) Validate() {

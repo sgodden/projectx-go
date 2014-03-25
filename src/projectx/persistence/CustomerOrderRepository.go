@@ -1,14 +1,14 @@
 package persistence
 
 import (
-	"projectx/modelapi"
-	_ "github.com/lib/pq"
 	"database/sql"
+	_ "github.com/lib/pq"
+	"projectx/model"
 )
 
 type ICustomerOrderRepository interface {
-	Save(modelapi.ICustomerOrder)
-	FindById(id string) modelapi.ICustomerOrder
+	Save(model.CustomerOrder)
+	FindById(id int) *model.CustomerOrder
 }
 
 func NewCustomerOrderRepository() ICustomerOrderRepository {
@@ -18,18 +18,29 @@ func NewCustomerOrderRepository() ICustomerOrderRepository {
 type customerOrderRepository struct {
 }
 
-func (r *customerOrderRepository) FindById(id string) modelapi.ICustomerOrder {
-	db, err := sql.Open("postgres", "user=pqgotest dbname=pqgotest sslmode=verify-full")
+func (r *customerOrderRepository) FindById(id int) *model.CustomerOrder {
+	db, err := sql.Open("postgres", "user=simon dbname=simon")
 	if err != nil {
 		panic(err)
 	}
-	rows, err := db.Query("SELECT * FROM tcustomerorder")
-	for rows.Next() {
-		var orderNumber string
-		err = rows.Scan(&orderNumber)
+	defer db.Close()
+
+	var orderNumber string
+	var customerReference string
+	err = db.QueryRow("SELECT orderNumber, customerReference FROM tcustomerorder where id=", id).
+		Scan(&orderNumber, &customerReference)
+
+	if err != nil {
+		panic(err)
 	}
-	return nil
+
+	var customerOrder = model.CustomerOrder{}
+	customerOrder.SetId(id)
+	customerOrder.SetOrderNumber(orderNumber)
+	customerOrder.SetCustomerReference(customerReference)
+
+	return &customerOrder
 }
 
-func (r *customerOrderRepository) Save(modelapi.ICustomerOrder) {
+func (r *customerOrderRepository) Save(model.CustomerOrder) {
 }
