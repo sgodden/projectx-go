@@ -11,13 +11,14 @@ var (
 func TestNotEmptyConstraintDoesNotAllowEmptyString(t *testing.T) {
 	success, _ := NotEmptyConstraint{}.Validate("", "foo")
 	if success {
-		t.Error("Should have failed")
+		t.Error("Empty string should fail validation")
 	}
 }
+
 func TestNotEmptyConstraintAllowsNonEmptyString(t *testing.T) {
 	success, _ := NotEmptyConstraint{}.Validate("bar", "foo")
 	if !success {
-		t.Error("Should have passed")
+		t.Error("Non-empty string should pass validation")
 	}
 }
 
