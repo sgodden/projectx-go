@@ -19,7 +19,7 @@ type customerOrderRepository struct {
 }
 
 func (r *customerOrderRepository) FindById(id int) *model.CustomerOrder {
-	db, err := sql.Open("postgres", "user=simon dbname=simon")
+	db, err := sql.Open("postgres", "user=simon password=simon dbname=simon")
 	if err != nil {
 		panic(err)
 	}
@@ -27,7 +27,7 @@ func (r *customerOrderRepository) FindById(id int) *model.CustomerOrder {
 
 	var orderNumber string
 	var customerReference string
-	err = db.QueryRow("SELECT orderNumber, customerReference FROM tcustomerorder where id=", id).
+	err = db.QueryRow("SELECT orderNumber, customerReference FROM tcustomerorder where id=$1", id).
 		Scan(&orderNumber, &customerReference)
 
 	if err != nil {
