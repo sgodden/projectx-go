@@ -34,10 +34,11 @@ func (r *customerOrderRepository) FindById(id int) *model.CustomerOrder {
 		panic(err)
 	}
 
-	var customerOrder = model.CustomerOrder{}
-	customerOrder.SetId(id)
-	customerOrder.SetOrderNumber(orderNumber)
-	customerOrder.SetCustomerReference(customerReference)
+	var customerOrder = model.CustomerOrder{
+		id,
+		orderNumber,
+		customerReference,
+	}
 
 	return &customerOrder
 }
