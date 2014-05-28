@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"projectx/persistence"
 	"net/http"
 )
@@ -12,6 +13,10 @@ func main() {
 	req.Header.Add("Authorization", "Basic YWRtaW5pc3RyYXRvcjo0bXkgaGFtbSNyaGVhZA==")
 	resp, _ := client.Do(req)
 	fmt.Println(resp.Status)
+	
+	body, _ := ioutil.ReadAll(resp.Body)
+	
+	fmt.Println(string(body))
 	
 	return
 	
