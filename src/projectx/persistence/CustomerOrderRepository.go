@@ -19,7 +19,7 @@ type customerOrderRepository struct {
 }
 
 func (r *customerOrderRepository) FindById(id int) *model.CustomerOrder {
-	db, err := sql.Open("postgres", "user=simon password=simon dbname=simon")
+	db, err := sql.Open("postgres", "user=simon dbname=projectx sslmode=disable")
 	if err != nil {
 		panic(err)
 	}
