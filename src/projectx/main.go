@@ -2,10 +2,11 @@ package main
 
 import (
     "projectx/persistence"
+	"fmt"
 )
 
 func main() {
 	repo := persistence.NewCustomerOrderRepository()
 	
-	repo.FindById(1)
+	fmt.Println(repo.FindById(1))
 }
