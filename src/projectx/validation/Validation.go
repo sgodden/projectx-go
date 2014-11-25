@@ -5,6 +5,6 @@ type ValidationError struct {
     Message string
 }
 
-interface Validatable {
+type Validatable interface {
   Validate() []ValidationError
 }
