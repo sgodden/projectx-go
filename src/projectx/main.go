@@ -14,5 +14,10 @@ func main() {
 	order.OrderNumber = "ASDASD"
 	order.CustomerReference = "WERWER"
 
-	fmt.Println(repo.Save(&order))
+	repo.Save(&order)
+	
+	fmt.Println(order.Id)
+	
+	reloadedOrder := repo.Get(order.Id)
+	fmt.Println(reloadedOrder.Id)
 }

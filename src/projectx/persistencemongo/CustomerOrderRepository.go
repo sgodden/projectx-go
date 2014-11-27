@@ -27,6 +27,16 @@ func (o *CustomerOrderRepository) Save(order *model.CustomerOrder) bson.ObjectId
 	return order.Id
 }
 
-func (o *CustomerOrderRepository) Get(id string) *model.CustomerOrder {
-	return nil
+func (o *CustomerOrderRepository) Get(id bson.ObjectId) *model.CustomerOrder {
+	session, collection := collection()
+	defer session.Close()
+	
+	ret := model.CustomerOrder{}
+	
+	err := collection.FindId(id).One(&ret)
+	if err != nil {
+		panic(err)
+	}
+	
+	return &ret
 }
