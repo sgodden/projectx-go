@@ -1,21 +1,16 @@
 package model
 
 import ( 
-  "projectx/validation"
+	"projectx/validation"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type CustomerOrder struct {
-	Id                uint64
+	Id                bson.ObjectId
 	OrderNumber       string
 	CustomerReference string
 }
 
 func (o *CustomerOrder) Validate() []validation.ValidationError {
     return nil
-}
-
-func (o *CustomerOrder) PrePersist() {
-  if o.Id == 0 {
-    panic("No id on customer order")
-  }
 }

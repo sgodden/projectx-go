@@ -2,12 +2,17 @@ package main
 
 import (
 	"fmt"
-	"projectx/persistence"
+	"projectx/model"
+	"projectx/persistencemongo"
 )
 
 func main() {
 	
-	repo := persistence.NewCustomerOrderRepository()
+	repo := persistencemongo.CustomerOrderRepository{}
+	
+	order := model.CustomerOrder{}
+	order.OrderNumber = "ASDASD"
+	order.CustomerReference = "WERWER"
 
-	fmt.Println(repo.FindById(1))
+	fmt.Println(repo.Save(&order))
 }

@@ -1,4 +1,4 @@
-package persistence
+package persistencepg
 
 import (
 	"database/sql"
