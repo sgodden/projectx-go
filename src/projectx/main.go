@@ -13,6 +13,7 @@ func main() {
 	order := model.CustomerOrder{}
 	order.OrderNumber = "ASDASD"
 	order.CustomerReference = "WERWER"
+	order.Status = "CREATED"
 
 	repo.Save(&order)
 	
@@ -20,4 +21,5 @@ func main() {
 	
 	reloadedOrder := repo.Get(order.Id)
 	fmt.Println(reloadedOrder.Id)
+	fmt.Println(reloadedOrder.Status)
 }
