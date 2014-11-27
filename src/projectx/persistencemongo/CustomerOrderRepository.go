@@ -19,11 +19,15 @@ func collection() (*mgo.Session, *mgo.Collection){
 type CustomerOrderRepository struct {}
 
 func (o *CustomerOrderRepository) Save(order *model.CustomerOrder) bson.ObjectId {
+
+	order.PrePersist()
+
 	session, c := collection()
 	defer session.Close()
-	
+
 	order.Id = bson.NewObjectId()
 	c.UpsertId(order.Id, order)
+
 	return order.Id
 }
 

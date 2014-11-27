@@ -2,7 +2,6 @@ package model
 
 import (
 	"gopkg.in/mgo.v2/bson"
-	"projectx/validation"
 )
 
 type CustomerOrder struct {
@@ -12,6 +11,6 @@ type CustomerOrder struct {
 	Status            string
 }
 
-func (o *CustomerOrder) Validate() []validation.ValidationError {
-	return nil
+func (o *CustomerOrder) PrePersist() {
+	thelogger.Log("CustomerOrder pre-persist")
 }

@@ -6,7 +6,14 @@ import (
 	"projectx/persistencemongo"
 )
 
+type Logger struct {}
+func (l *Logger) Log(msg string) {
+	fmt.Println(msg)
+}
+
 func main() {
+	
+	model.SetLogger(&Logger{})
 	
 	repo := persistencemongo.CustomerOrderRepository{}
 	
