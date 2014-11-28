@@ -29,4 +29,13 @@ func main() {
 	reloadedOrder := repo.Get(order.Id)
 	fmt.Println(reloadedOrder.Id)
 	fmt.Println(reloadedOrder.Status)
+	
+	orders := repo.Query()
+	
+	for _, order := range orders {
+		fmt.Println(order.Id)
+	}
+	
+	/* let's start a web server */
+	
 }
