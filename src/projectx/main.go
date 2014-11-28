@@ -45,7 +45,8 @@ func main() {
 	
 	r := mux.NewRouter()
 	
-	r.HandleFunc("/", query).Methods("GET");
+	r.HandleFunc("/", query).Methods("GET")
+	r.HandleFunc("/", post).Methods("POST")
 	http.ListenAndServe(":8080", r)
 }
 
@@ -57,6 +58,12 @@ func query(w http.ResponseWriter, r *http.Request) {
 	w.Write(response)
 }
 
-func save(w http.ResponseWriter, r *http.Request) {
-	
+func post(w http.ResponseWriter, r *http.Request) {
+	decoder := json.NewDecoder(r.Body)
+	var order model.CustomerOrder
+	err := decoder.Decode(&order)
+	if err != nil {
+		panic(err)
+	}
+	repo.Save(&order)
 }
