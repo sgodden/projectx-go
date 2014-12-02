@@ -1,26 +1,12 @@
 package main
 
 import (
-	"fmt"
-	"projectx/model"
-	"projectx/persistencemongo"
 	"net/http"
-	"encoding/json"
 	"github.com/gorilla/mux"
-)
-
-type logger struct {}
-func (l *logger) Log(msg string) {
-	fmt.Println(msg)
-}
-
-var (
-	repo = persistencemongo.CustomerOrderRepository{}
+	"projectx/resources"
 )
 
 func main() {
-	
-	model.SetLogger(&logger{})
 	
 	// order := model.CustomerOrder{}
 	// order.OrderNumber = "ASDASD"
@@ -45,25 +31,7 @@ func main() {
 	
 	r := mux.NewRouter()
 	
-	r.HandleFunc("/", query).Methods("GET")
-	r.HandleFunc("/", post).Methods("POST")
+	resources.Configure(r)
+	
 	http.ListenAndServe(":8080", r)
-}
-
-func query(w http.ResponseWriter, r *http.Request) {
-	response, err := json.Marshal(repo.Query())
-	if err != nil {
-		panic(err)
-	}
-	w.Write(response)
-}
-
-func post(w http.ResponseWriter, r *http.Request) {
-	decoder := json.NewDecoder(r.Body)
-	var order model.CustomerOrder
-	err := decoder.Decode(&order)
-	if err != nil {
-		panic(err)
-	}
-	repo.Save(&order)
 }
