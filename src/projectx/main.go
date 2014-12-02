@@ -33,5 +33,8 @@ func main() {
 	
 	resources.Configure(r)
 	
+	fs := http.FileServer(http.Dir("static"))
+	r.Handle("/index.htm", fs)
+	
 	http.ListenAndServe(":8080", r)
 }

@@ -19,13 +19,11 @@ var (
 )
 
 func Configure(r *mux.Router) {
-	
+
 	model.SetLogger(&logger{})
-	
-	s := r.PathPrefix("/orders").Subrouter()
-	
-	s.HandleFunc("/", query).Methods("GET")
-	s.HandleFunc("/", post).Methods("POST")
+
+	r.HandleFunc("/orders", query).Methods("GET")
+	r.HandleFunc("/orders", post).Methods("POST")
 }
 
 func query(w http.ResponseWriter, r *http.Request) {

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			Orders
+		</title>
+	</head>
+	<body ng-app="projectx" ng-controller="ordersController">
+		<table>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Order Number</th>
+					<th>Customer Reference</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="order in orders">
+					<td>{{ order.Id }}</td>
+					<td>{{ order.OrderNumber }}</td>
+					<td>{{ order.CustomerReference }}</td>
+				</tr>
+			</tbody>
+		</table>
+		
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-cookies.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-resource.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-route.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-sanitize.min.js"></script>
+
+<script type="text/javascript">
+	angular.module('projectx', [
+		'ngResource'
+	])
+	.factory('Order', ['$resource', function($resource) {
+		return $resource('/orders');
+	}])
+	.controller('ordersController', ['$scope', 'Order', function($scope, Order) {
+		$scope.orders = Order.query();
+	}])
+</script>
+
+</body>
+</html>
