@@ -14,7 +14,7 @@ angular.module('projectx', [
 	});
 }])
 .factory('Order', ['$resource', function($resource) {
-	return $resource('/rest/orders');
+	return $resource('/rest/order/:id');
 }])
 .controller('ordersController', ['$scope', 'Order', function($scope, Order) {
 	$scope.orders = Order.query();

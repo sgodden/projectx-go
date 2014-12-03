@@ -41,7 +41,7 @@ func get(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("GET")
 	vars := mux.Vars(r)
 	
-	response, err := json.Marshal(repo.Get(bson.ObjectId{vars["id"]}))
+	response, err := json.Marshal(repo.Get(bson.ObjectIdHex(vars["id"])))
 	if err != nil {
 		panic(err)
 	}
