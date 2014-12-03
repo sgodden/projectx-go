@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"github.com/gorilla/mux"
 	"projectx/resources"
@@ -31,12 +32,14 @@ func main() {
 	
 	r := mux.NewRouter()
 	
-	resources.Configure(r)
-	
 	fs := http.FileServer(http.Dir("static"))
 	r.Handle("", http.RedirectHandler("/index.htm", 302))
 	r.Handle("/", http.RedirectHandler("/index.htm", 302))
 	r.Handle("/index.htm", fs)
 	
+	s := r.PathPrefix("/rest").Subrouter()
+	resources.Configure(s)
+	
+	fmt.Println("Listening on port 8080...")
 	http.ListenAndServe(":8080", r)
 }

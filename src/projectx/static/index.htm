@@ -46,7 +46,7 @@
 		'ngResource'
 	])
 	.factory('Order', ['$resource', function($resource) {
-		return $resource('/orders');
+		return $resource('/rest/orders');
 	}])
 	.controller('ordersController', ['$scope', 'Order', function($scope, Order) {
 		$scope.orders = Order.query();
