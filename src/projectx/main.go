@@ -33,8 +33,12 @@ func main() {
 	r := mux.NewRouter()
 	
 	fs := http.FileServer(http.Dir("static"))
-	r.Handle("", http.RedirectHandler("/index.htm", 302))
-	r.Handle("/", http.RedirectHandler("/index.htm", 302))
+	redirectToIndex := http.RedirectHandler("/index.htm", 302)
+	
+	r.Handle("", redirectToIndex)
+	r.Handle("/", redirectToIndex)
+	r.PathPrefix("/index.htm/").Handler(redirectToIndex)
+	
 	r.Handle("/index.htm", fs)
 	r.PathPrefix("/app/").Handler(fs)
 	

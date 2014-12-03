@@ -18,4 +18,8 @@ angular.module('projectx', [
 }])
 .controller('ordersController', ['$scope', 'Order', function($scope, Order) {
 	$scope.orders = Order.query();
-}]);
+}])
+.controller('orderController', ['$scope', 'Order', '$routeParams', function($scope, Order, routeParams) {
+	$scope.order = Order.get({ id: routeParams.id });
+}])
+;
