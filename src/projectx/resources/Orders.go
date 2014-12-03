@@ -39,12 +39,16 @@ func query(w http.ResponseWriter, r *http.Request) {
 
 func get(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("GET")
-	vars := mux.Vars(r)
 	
-	response, err := json.Marshal(repo.Get(bson.ObjectIdHex(vars["id"])))
+	id := mux.Vars(r)["id"]
+	objectId := bson.ObjectIdHex(id)
+	
+	response, err := json.Marshal(repo.Get(objectId))
+	
 	if err != nil {
 		panic(err)
 	}
+	
 	w.Write(response)
 }
 
