@@ -36,6 +36,7 @@ func main() {
 	r.Handle("", http.RedirectHandler("/index.htm", 302))
 	r.Handle("/", http.RedirectHandler("/index.htm", 302))
 	r.Handle("/index.htm", fs)
+	r.PathPrefix("/app/").Handler(fs)
 	
 	s := r.PathPrefix("/rest").Subrouter()
 	resources.Configure(s)
