@@ -1,8 +1,9 @@
 <h1>Order {{ order.Id }}</h1>
-<form no-validate ng-submit="submit()">
-	<div class="form-group">
+<form novalidate class="form" name="form">
+	<div class="form-group {{ form.orderNumber.$invalid ? 'has-error' : '' }}">
 		<label for="orderNumber">Order Number</label>
-		<input id="orderNumber" class="form-control" type="text" ng-model="order.OrderNumber" ng-required placeholder="Order Number"/>
+		<input id="orderNumber" name="orderNumber" class="form-control" type="text" ng-model="order.OrderNumber" required
+			placeholder="Order Number"/>
 	</div>
-	<button type="submit" class="btn btn-primary">Submit</button>
+	<input ng-click="submit()" type="submit" class="btn btn-primary">
 </form>

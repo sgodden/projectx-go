@@ -35,6 +35,12 @@ angular.module('projectx', [
 		}
 
 		$scope.submit = function () {
-			Order.save($scope.order);
+			if ($scope.form.$invalid) {
+				console.debug("The form is invalid");
+				return;
+			} else {
+				console.debug("Saving the order");
+				Order.save($scope.order);
+			}
 		}
 	}]);
